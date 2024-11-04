@@ -2,6 +2,8 @@ package ir.maktabsharif;
 
 import ir.maktabsharif.model.Student;
 import ir.maktabsharif.model.Teacher;
+import ir.maktabsharif.repository.StudentRepository;
+import ir.maktabsharif.repository.impl.StudentRepositoryImpl;
 import ir.maktabsharif.thread.FirstThread;
 import ir.maktabsharif.tut.Account;
 
@@ -14,14 +16,23 @@ import java.util.Scanner;
 public class Main {
     public static void main(String[] args) throws InterruptedException {
 
-        Thread thread = new Thread(new FirstThread());
         System.out.println(Thread.currentThread().getName());
 
-        {
-            Thread.sleep(2222, 2);
+        StudentRepositoryImpl studentRepository = new StudentRepositoryImpl(); {
         }
+        Thread thread = new Thread(new FirstThread(studentRepository));
         thread.start();
-        thread.join();
+        thread.setPriority(1);
+
+//
+//        Thread thread = new Thread(new FirstThread());
+//        System.out.println(Thread.currentThread().getName());
+//
+//        {
+//            Thread.sleep(2222, 2);
+//        }
+//        thread.start();
+//        thread.join();
 
 
 

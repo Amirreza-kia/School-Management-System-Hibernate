@@ -19,11 +19,12 @@ public class CourseRepositoryImpl  implements CourseRepository  {
     public Optional<Course> findById(int id) {
         EntityManager em = EntityManagerProvider.getEntityManager();
         EntityTransaction transaction = em.getTransaction();
-        Course course = null;
+        Optional<Course> course = Optional.empty();
         try {
             transaction.begin();
-            course = em.find(Course.class, id);
+            Course course1 = em.find(Course.class, id);
             transaction.commit();
+            course = Optional.of(course1);
 
         } catch (Exception e) {
             transaction.rollback();
@@ -31,7 +32,7 @@ public class CourseRepositoryImpl  implements CourseRepository  {
             em.close();
         }
 
-        return Optional.ofNullable(course);
+        return course;
     }
 
     @Override
@@ -46,6 +47,7 @@ public class CourseRepositoryImpl  implements CourseRepository  {
 
         } catch (Exception e) {
             transaction.rollback();
+
         } finally {
             em.close();
         }
@@ -100,6 +102,8 @@ public class CourseRepositoryImpl  implements CourseRepository  {
         finally {
             em.close();
         }
+
+        //Query query = entityManager.createQuery("select c from Course c");
 
     }
 }
