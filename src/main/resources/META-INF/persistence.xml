@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence xmlns="http://java.sun.com/xml/ns/persistence" version="2.0">
+    <persistence-unit name="jdbc-postgres">
+        <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
+        <class>ir.maktabsharif.model.Student</class>
+        <class>ir.maktabsharif.model.Course</class>
+        <class>ir.maktabsharif.model.Teacher</class>
+        <class>ir.maktabsharif.model.Exam</class>
+        <class>ir.maktabsharif.tut.Account</class>
+        <properties>
+            <property name="javax.persistence.jdbc.url" value="jdbc:postgresql://localhost:5432/maktabshaif"/>
+            <property name="javax.persistence.jdbc.user" value="postgres"/>
+            <property name="javax.persistence.jdbc.password" value="09059228271"/>
+<!--            در واقع لحجه زبانی ما با ارتباط با دیتا بیس قرار دارد-->
+            <property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQLDialect"/>
+            <property name="javax.persistence.jdbc.driver" value="org.postgresql.Driver"/>
+<!--            create-drop در اینجا تیبل هارو خالی میکنه و هر وقت از close() داخل مین استفاده کنیم -->
+<!--            create خالی میکند ولی باید ران گرفته شود-->
+<!--            update داخل خودش ذخیره می کند-->
+<!--            معمولا در شروع پروژه بر روی create قرار می دهیم -->
+<!--            validate بررسی می کند با ورودی ما با دیتابیس می باشد و هیچ تغییری داخل دیتا بیس ایجاد نمی کند-->
+            <property name="hibernate.hbm2ddl.auto" value="create"/>
+<!--            در این بخش از جزوه وارد شده-->
+            <property name="show_sql" value="true"/>
+        </properties>
+    </persistence-unit>
+</persistence>
