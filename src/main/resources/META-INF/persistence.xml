@@ -19,7 +19,7 @@
 <!--            update داخل خودش ذخیره می کند-->
 <!--            معمولا در شروع پروژه بر روی create قرار می دهیم -->
 <!--            validate بررسی می کند با ورودی ما با دیتابیس می باشد و هیچ تغییری داخل دیتا بیس ایجاد نمی کند-->
-            <property name="hibernate.hbm2ddl.auto" value="update"/>
+            <property name="hibernate.hbm2ddl.auto" value="create"/>
 <!--            در این بخش از جزوه وارد شده-->
             <property name="show_sql" value="true"/>
         </properties>

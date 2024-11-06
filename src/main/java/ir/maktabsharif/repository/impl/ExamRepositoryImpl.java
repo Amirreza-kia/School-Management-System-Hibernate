@@ -1,100 +1,64 @@
 package ir.maktabsharif.repository.impl;
 
 import ir.maktabsharif.Utill.EntityManagerProvider;
-import ir.maktabsharif.model.Course;
 import ir.maktabsharif.model.Exam;
 import ir.maktabsharif.repository.ExamRepository;
 
 import javax.persistence.EntityManager;
-import javax.persistence.EntityTransaction;
 import java.util.List;
 import java.util.Optional;
 
 public class ExamRepositoryImpl implements ExamRepository  {
+    EntityManager entityManager = EntityManagerProvider.getEntityManager();
     @Override
     public Optional<Exam> findById(int id) {
-        EntityManager em = EntityManagerProvider.getEntityManager();
-        EntityTransaction transaction = em.getTransaction();
-        Exam exam = null;
-        try {
-            transaction.begin();
-            exam = em.find(Exam.class, id);
-            transaction.commit();
-
-        } catch (Exception e) {
-            transaction.rollback();
-        } finally {
-            em.close();
-        }
-
-        return Optional.ofNullable(exam);
+        return Optional.ofNullable(entityManager.find(Exam.class, id));
     }
 
     @Override
     public List<Exam> findAll() {
-        EntityManager em = EntityManagerProvider.getEntityManager();
-        EntityTransaction transaction = em.getTransaction();
-        List<Exam> exams = null;
-        try {
-            transaction.begin();
-            exams = em.createQuery("from Exam ", Exam.class).getResultList();
-            transaction.commit();
-
-        } catch (Exception e) {
-            transaction.rollback();
-        } finally {
-            em.close();
-        }
-        return exams;
+        return this.entityManager.createQuery("from Exam", Exam.class).getResultList();
     }
 
     @Override
     public void persist(Exam entity) {
-        EntityManager em = EntityManagerProvider.getEntityManager();
-        EntityTransaction transaction = em.getTransaction();
-
         try {
-            transaction.begin();
-            em.persist(entity);
-            transaction.commit();
+            this.entityManager.getTransaction().begin();
+            this.entityManager.persist(entity);
+            this.entityManager.getTransaction().commit();
         }catch (Exception e) {
-            transaction.rollback();
+            this.entityManager.getTransaction().rollback();
         }finally {
-            em.close();
+            this.entityManager.close();
         }
     }
 
     @Override
     public void update(Exam entity) {
-        EntityManager em = EntityManagerProvider.getEntityManager();
-        EntityTransaction transaction = em.getTransaction();
-
         try {
-            transaction.begin();
-            em.merge(entity);
-            transaction.commit();
+            this.entityManager.getTransaction().begin();
+            this.entityManager.merge(entity);
+            this.entityManager.getTransaction().commit();
 
         }catch (Exception e) {
-            transaction.rollback();
+            this.entityManager.getTransaction().rollback();
         }finally {
-            em.close();
+            this.entityManager.close();
         }
 
     }
 
     @Override
     public void delete(Exam entity) {
-        EntityManager em = EntityManagerProvider.getEntityManager();
-        EntityTransaction transaction = em.getTransaction();
         try {
-            transaction.begin();
-            em.remove(entity);
-            transaction.commit();
+            this.entityManager.getTransaction().begin();
+            this.entityManager.remove(entity);
+            this.entityManager.getTransaction().commit();
         }catch (Exception e) {
-            transaction.rollback();
+            this.entityManager.getTransaction().rollback();
         }
         finally {
-            em.close();
+            this.entityManager.close();
         }
 
     }

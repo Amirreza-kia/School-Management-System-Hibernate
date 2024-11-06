@@ -6,6 +6,8 @@ import ir.maktabsharif.repository.StudentRepository;
 import ir.maktabsharif.repository.impl.StudentRepositoryImpl;
 import ir.maktabsharif.thread.FirstThread;
 import ir.maktabsharif.tut.Account;
+import org.hibernate.Hibernate;
+import org.hibernate.Session;
 
 
 import javax.persistence.EntityManager;
@@ -23,6 +25,8 @@ public class Main {
         Thread thread = new Thread(new FirstThread(studentRepository));
         thread.start();
         thread.setPriority(1);
+
+
 
 //
 //        Thread thread = new Thread(new FirstThread());
