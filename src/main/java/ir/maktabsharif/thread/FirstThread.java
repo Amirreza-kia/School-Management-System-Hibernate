@@ -15,11 +15,14 @@ public class FirstThread implements Runnable {
     @Override
     public void run() {
         List<Student> students = studentRepository.findAll();
+//        int numbers = studentRepository.getStudentCount();
+        System.out.println(Thread.currentThread().getName());
         int number = students.size();
         while (true) {
             System.out.println(number);
+//            System.out.println(numbers);
             try {
-                Thread.sleep(13422,1);
+                Thread.sleep(2000,1);
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }

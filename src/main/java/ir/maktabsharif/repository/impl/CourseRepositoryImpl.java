@@ -1,67 +1,91 @@
 package ir.maktabsharif.repository.impl;
 
-import ir.maktabsharif.Utill.EntityManagerProvider;
+import ir.maktabsharif.util.EntityManagerProvider;
 import ir.maktabsharif.model.Course;
 import ir.maktabsharif.repository.CourseRepository;
 
 import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
 import java.util.List;
 import java.util.Optional;
 
-public class CourseRepositoryImpl  implements CourseRepository  {
-    EntityManager entityManager = EntityManagerProvider.getEntityManager();
-    @Override
-    public Optional<Course> findById(int id) {
-        return Optional.ofNullable(this.entityManager.find(Course.class, id));
+
+
+public class CourseRepositoryImpl implements CourseRepository {
+    private final EntityManagerProvider entityManagerProvider;
+    public CourseRepositoryImpl(EntityManagerProvider entityManagerProvider) {
+        this.entityManagerProvider = entityManagerProvider;
     }
 
+    //--------------------------------------------------
+    @Override
+    public Optional<Course> findById(long id) {
+        return Optional.ofNullable(entityManagerProvider.getEntityManager().find(Course.class, id));
+    }
+
+    //--------------------------------------------------
     @Override
     public List<Course> findAll() {
-        return this.entityManager.createQuery("from Course", Course.class).getResultList();
+        return entityManagerProvider.getEntityManager().createQuery("from Course", Course.class).getResultList();
     }
 
+    //--------------------------------------------------
     @Override
+    public void saveOrUpdate(Course obj) {
+        if (obj.getId() == null) {
+            persist(obj);
+        } else update(obj);
+    }
+
+    //--------------------------------------------------
+    @Override
+    public void delete(long id) {
+        EntityManager entityManager = entityManagerProvider.getEntityManager();
+        EntityTransaction transaction = entityManager.getTransaction();
+        Course course = findById(id).get();
+
+        try {
+            transaction.begin();
+            entityManager.remove(course);
+            transaction.commit();
+        } catch (Exception e) {
+            transaction.rollback();
+        } finally {
+            entityManager.close();
+        }
+    }
+
+    //--------------------------------------------------
     public void persist(Course entity) {
+        EntityManager entityManager = entityManagerProvider.getEntityManager();
+        EntityTransaction transaction = entityManager.getTransaction();
         try {
-           this.entityManager.getTransaction().begin();
-           this.entityManager.persist(entity);
-           this.entityManager.getTransaction().commit();
-        }catch (Exception e) {
-            entityManager.getTransaction().rollback();
-        }finally {
-            this.entityManager.close();
+            transaction.begin();
+            entityManager.persist(entity);
+            transaction.commit();
+        } catch (Exception e) {
+            transaction.rollback();
+        } finally {
+            entityManager.close();
         }
-
     }
 
-    @Override
+    //--------------------------------------------------
     public void update(Course entity) {
-        try {
-            this.entityManager.getTransaction().begin();
-            this.entityManager.merge(entity);
-            this.entityManager.getTransaction().commit();
-
-        }catch (Exception e) {
-            this.entityManager.getTransaction().rollback();
-        }finally {
-            this.entityManager.close();
-        }
-    }
-
-    @Override
-    public void delete(Course entity) {
-        try {
-            this.entityManager.getTransaction().begin();
-            this.entityManager.remove(entity);
-            this.entityManager.getTransaction().commit();
-        }catch (Exception e) {
-           this.entityManager.getTransaction().rollback();
-        }
-        finally {
-            this.entityManager.close();
-        }
-
-        //Query query = entityManager.createQuery("select c from Course c");
+        EntityManager entityManager = entityManagerProvider.getEntityManager();
+        EntityTransaction transaction = entityManager.getTransaction();
+        Optional<Course> course = findById(entity.getId());
+        if (course.isPresent()) {
+            try {
+                transaction.begin();
+                entityManager.merge(entity);
+                transaction.commit();
+            } catch (Exception e) {
+                transaction.rollback();
+            } finally {
+                entityManager.close();
+            }
+        }else System.out.println("Course not found");
 
     }
 }

@@ -1,33 +1,34 @@
 package ir.maktabsharif.repository.impl;
 
 import ir.maktabsharif.util.EntityManagerProvider;
-import ir.maktabsharif.model.Teacher;
-import ir.maktabsharif.repository.TeacherRepository;
+import ir.maktabsharif.model.User;
+import ir.maktabsharif.repository.UserRepository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
+import javax.persistence.Query;
 import java.util.List;
 import java.util.Optional;
 
-public class TeacherRepositoryImpl implements TeacherRepository {
+public class UserRepositoryImpl implements UserRepository {
     private final EntityManagerProvider entityManagerProvider;
-
-    public TeacherRepositoryImpl(EntityManagerProvider entityManagerProvider) {
+    public UserRepositoryImpl(EntityManagerProvider entityManagerProvider) {
         this.entityManagerProvider = entityManagerProvider;
     }
+
     @Override
-    public Optional<Teacher> findById(long id) {
-        return Optional.ofNullable(entityManagerProvider.getEntityManager().find(Teacher.class, id));
+    public Optional<User> findById(long id) {
+        return Optional.ofNullable(entityManagerProvider.getEntityManager().find(User.class, id));
     }
 
     @Override
-    public List<Teacher> findAll() {
-        return entityManagerProvider.getEntityManager().createQuery("SELECT t FROM Teacher t", Teacher.class).getResultList();
+    public List<User> findAll() {
+       return entityManagerProvider.getEntityManager().createQuery("select u from User u", User.class).getResultList();
     }
 
     @Override
-    public void saveOrUpdate(Teacher obj) {
-        if (obj.getId() == null) {
+    public void saveOrUpdate(User obj) {
+        if(obj.getId() == null) {
             persist(obj);
         }else update(obj);
     }
@@ -36,20 +37,26 @@ public class TeacherRepositoryImpl implements TeacherRepository {
     public void delete(long id) {
         EntityManager entityManager = entityManagerProvider.getEntityManager();
         EntityTransaction transaction = entityManager.getTransaction();
-        Teacher teacher = findById(id).get();
+        User user = findById(id).get();
         try {
             transaction.begin();
-            entityManager.remove(teacher);
+            entityManager.remove(user);
             transaction.commit();
-        }catch (Exception e) {
+        }catch(Exception e) {
             transaction.rollback();
-        }
-        finally {
+        }finally {
             entityManager.close();
         }
 
     }
-    public void persist(Teacher entity) {
+
+    public int getCountUser(){
+        EntityManager entityManager = entityManagerProvider.getEntityManager();
+        Query query = entityManager.createQuery("select count(u) from User u");
+        query.setMaxResults(1);
+        return ((Long)query.getSingleResult()).intValue();
+    }
+    public void persist(User entity) {
         EntityManager entityManager = entityManagerProvider.getEntityManager();
         EntityTransaction transaction = entityManager.getTransaction();
         try {
@@ -63,22 +70,21 @@ public class TeacherRepositoryImpl implements TeacherRepository {
         }
     }
 
-    public void update(Teacher entity) {
+
+    public void update(User entity) {
         EntityManager entityManager = entityManagerProvider.getEntityManager();
         EntityTransaction transaction = entityManager.getTransaction();
-        Optional<Teacher> teacher = this.findById(entity.getId());
-        if (teacher.isPresent()) {
+        Optional<User> user = this.findById(entity.getId());
+        if(user.isPresent()) {
             try {
-               transaction.begin();
-               entityManager.merge(entity);
-               transaction.commit();
-
+                transaction.begin();
+                entityManager.merge(entity);
+                transaction.commit();
             }catch (Exception e) {
-                transaction.rollback();
+               transaction.rollback();
             }finally {
                 entityManager.close();
             }
-        }else System.out.println("Teacher not found");
-
+        }else System.out.println("user not found");
     }
 }

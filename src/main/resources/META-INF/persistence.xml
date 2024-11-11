@@ -6,7 +6,7 @@
         <class>ir.maktabsharif.model.Course</class>
         <class>ir.maktabsharif.model.Teacher</class>
         <class>ir.maktabsharif.model.Exam</class>
-        <class>ir.maktabsharif.tut.Account</class>
+        <class>ir.maktabsharif.model.User</class>
         <properties>
             <property name="javax.persistence.jdbc.url" value="jdbc:postgresql://localhost:5432/maktabshaif"/>
             <property name="javax.persistence.jdbc.user" value="postgres"/>
@@ -19,9 +19,11 @@
 <!--            update داخل خودش ذخیره می کند-->
 <!--            معمولا در شروع پروژه بر روی create قرار می دهیم -->
 <!--            validate بررسی می کند با ورودی ما با دیتابیس می باشد و هیچ تغییری داخل دیتا بیس ایجاد نمی کند-->
-            <property name="hibernate.hbm2ddl.auto" value="create"/>
+            <property name="hibernate.hbm2ddl.auto" value="update"/>
 <!--            در این بخش از جزوه وارد شده-->
+<!--            در این بخش لاگ هارا در هنگام ران کردن به ما نمایش می دهد-->
             <property name="show_sql" value="true"/>
+
         </properties>
     </persistence-unit>
 </persistence>

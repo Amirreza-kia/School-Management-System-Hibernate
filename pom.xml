@@ -28,7 +28,7 @@
             <version>1.18.34</version>
             <scope>provided</scope>
         </dependency>
-
+<!--این یخش داخل پروژه نیست-->
         <dependency>
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-core</artifactId>
@@ -46,6 +46,24 @@
             <version>${junit.version}</version>
             <scope>test</scope>
         </dependency>
+<!--        تا اینجا-->
+<!--        این بخش باید اضافه بشه به سیستم-->
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-api</artifactId>
+            <version>2.14.1</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-core</artifactId>
+            <version>2.14.1</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-slf4j-impl</artifactId>
+            <version>2.4.1</version>
+        </dependency>
+<!--        تا اینجا-->
     </dependencies>
 
     <build>

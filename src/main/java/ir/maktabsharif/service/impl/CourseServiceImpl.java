@@ -1,4 +1,6 @@
 package ir.maktabsharif.service.impl;
 
-public class CourseServiceImpl {
+import ir.maktabsharif.service.CourseService;
+
+public class CourseServiceImpl implements CourseService {
 }

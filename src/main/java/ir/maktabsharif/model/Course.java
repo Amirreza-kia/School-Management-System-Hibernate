@@ -21,8 +21,7 @@ public class Course extends BaseModel {
     private String title;
 
     private String unit;
-
-
+    //relation
     @ManyToMany(mappedBy = "courses")
     private List<Student> students = new ArrayList<>();
 

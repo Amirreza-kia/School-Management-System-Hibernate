@@ -1,4 +1,4 @@
-package ir.maktabsharif.Utill;
+package ir.maktabsharif.util;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -10,5 +10,5 @@ public class EntityManagerProvider {
     public static EntityManager getEntityManager() {
         return emf.createEntityManager();
     }
-
 }
+
