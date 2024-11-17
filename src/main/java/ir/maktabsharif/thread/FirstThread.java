@@ -1,6 +1,6 @@
 package ir.maktabsharif.thread;
 
-import ir.maktabsharif.model.Student;
+import ir.maktabsharif.model.model.Student;
 import ir.maktabsharif.repository.StudentRepository;
 
 import java.util.List;

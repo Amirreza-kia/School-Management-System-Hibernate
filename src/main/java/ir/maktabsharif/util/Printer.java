@@ -1,6 +1,6 @@
 package ir.maktabsharif.util;
 
-import ir.maktabsharif.model.*;
+import ir.maktabsharif.model.model.Student;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,6 +15,7 @@ public class Printer {
     }
     public static void printStudentItem() {
         List<Student> studentList = new ArrayList<>();
+
         String leftAlignFormat = "| %-15s | %-4d |%n";
         System.out.format("+-----------------+------+%n");
         System.out.format("| Column name     | ID   |%n");

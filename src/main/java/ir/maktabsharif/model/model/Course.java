@@ -1,7 +1,7 @@
-package ir.maktabsharif.model;
+package ir.maktabsharif.model.model;
 
+import ir.maktabsharif.model.baseModel.BaseModel;
 import lombok.*;
-import org.hibernate.annotations.GeneratorType;
 
 import javax.persistence.*;
 
@@ -16,6 +16,7 @@ import java.util.List;
 @Builder
 @Table(name = "courses")
 public class Course extends BaseModel {
+
 
     @Column(name = "course_title")
     private String title;

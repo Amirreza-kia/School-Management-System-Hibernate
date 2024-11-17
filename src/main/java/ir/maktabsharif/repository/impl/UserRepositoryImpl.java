@@ -1,29 +1,30 @@
 package ir.maktabsharif.repository.impl;
 
 import ir.maktabsharif.util.EntityManagerProvider;
-import ir.maktabsharif.model.User;
+import ir.maktabsharif.model.model.User;
 import ir.maktabsharif.repository.UserRepository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Query;
+import javax.persistence.TypedQuery;
 import java.util.List;
 import java.util.Optional;
 
 public class UserRepositoryImpl implements UserRepository {
-    private final EntityManagerProvider entityManagerProvider;
-    public UserRepositoryImpl(EntityManagerProvider entityManagerProvider) {
-        this.entityManagerProvider = entityManagerProvider;
+
+    public UserRepositoryImpl() {
+
     }
 
     @Override
-    public Optional<User> findById(long id) {
-        return Optional.ofNullable(entityManagerProvider.getEntityManager().find(User.class, id));
+    public Optional<User> findById(Long id) {
+        return Optional.ofNullable(EntityManagerProvider.getEntityManager().find(User.class, id));
     }
 
     @Override
     public List<User> findAll() {
-       return entityManagerProvider.getEntityManager().createQuery("select u from User u", User.class).getResultList();
+       return EntityManagerProvider.getEntityManager().createQuery("select u from User u", User.class).getResultList();
     }
 
     @Override
@@ -34,10 +35,10 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
-    public void delete(long id) {
-        EntityManager entityManager = entityManagerProvider.getEntityManager();
+    public void delete(Long id) {
+        EntityManager entityManager = EntityManagerProvider.getEntityManager();
         EntityTransaction transaction = entityManager.getTransaction();
-        User user = findById(id).get();
+        User user = entityManager.find(User.class, id);
         try {
             transaction.begin();
             entityManager.remove(user);
@@ -51,13 +52,13 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     public int getCountUser(){
-        EntityManager entityManager = entityManagerProvider.getEntityManager();
+        EntityManager entityManager = EntityManagerProvider.getEntityManager();
         Query query = entityManager.createQuery("select count(u) from User u");
         query.setMaxResults(1);
         return ((Long)query.getSingleResult()).intValue();
     }
     public void persist(User entity) {
-        EntityManager entityManager = entityManagerProvider.getEntityManager();
+        EntityManager entityManager = EntityManagerProvider.getEntityManager();
         EntityTransaction transaction = entityManager.getTransaction();
         try {
             transaction.begin();
@@ -72,7 +73,7 @@ public class UserRepositoryImpl implements UserRepository {
 
 
     public void update(User entity) {
-        EntityManager entityManager = entityManagerProvider.getEntityManager();
+        EntityManager entityManager = EntityManagerProvider.getEntityManager();
         EntityTransaction transaction = entityManager.getTransaction();
         Optional<User> user = this.findById(entity.getId());
         if(user.isPresent()) {
@@ -86,5 +87,20 @@ public class UserRepositoryImpl implements UserRepository {
                 entityManager.close();
             }
         }else System.out.println("user not found");
+    }
+//    public List<Student> findByFirstname(String firstname) {
+//        EntityManager entityManager = entityManagerProvider.getEntityManager();
+//        TypedQuery<Student> query = entityManager.createNamedQuery("Student.findByFirstname", Student.class);
+//        query.setParameter(1, firstname);
+//        return query.getResultList();
+//
+//    }
+    @Override
+    public Optional<User> login(String username, String password) {
+       EntityManager entityManager = EntityManagerProvider.getEntityManager();
+        TypedQuery<User> query = entityManager.createNamedQuery("User.findByUsernameAndPassword", User.class);
+        query.setParameter(1, username);
+        query.setParameter(2, password);
+        return Optional.ofNullable(query.getSingleResult());
     }
 }

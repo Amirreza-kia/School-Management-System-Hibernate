@@ -12,21 +12,21 @@ public class ApplicationContext {
             "CREATE TEACHER", "UPDATE TEACHER", "DELETE TEACHER",
             "CREATE STUDENT", "UPDATE STUDENT", "DELETE STUDENT",
             "BACK LAST MENU"};
-    public static final String[] STUDENT_MENU_ITEM = {"CREATE COURSE", "SEE GPU INFORMATION"
+    public static final String[] STUDENT_MENU_ITEM = {"ASSIGN COURSE", "SEE GPU INFORMATION"
             , "BACK LAST MENU"};
-    public static final String[] TEACHER_MENU_ITEM = {};
+    public static final String[] TEACHER_MENU_ITEM = {"SET SCORE FOR STUDENT","SEE COURSE INFORMATION","BACK LAST MENU"};
 
-//    private static final EntityManagerProvider emp = new EntityManagerProvider();
-//    public static CourseRepository courseRepository = new CourseRepositoryImpl(emp);
-//    public static ExamRepository examRepository = new ExamRepositoryImpl(emp);
-//    public static UserRepository userRepository = new UserRepositoryImpl(emp);
-//    public static TeacherRepository teacherRepository = new TeacherRepositoryImpl(emp);
-//    public static StudentRepository studentRepository = new StudentRepositoryImpl(emp);
-//    public static CourseService courseService = new CourseServiceImpl();
-//    public static ExamService examService = new ExamServiceImpl();
-//    public static StudentService studentService = new StudentServiceImpl();
-//    public static TeacherService teacherService = new TeacherServiceImpl();
-//    public static UserService userService = new UserServiceImpl();
+
+    public static CourseRepository courseRepository = new CourseRepositoryImpl();
+    public static ExamRepository examRepository = new ExamRepositoryImpl();
+    public static UserRepository userRepository = new UserRepositoryImpl();
+    public static TeacherRepository teacherRepository = new TeacherRepositoryImpl();
+    public static StudentRepository studentRepository = new StudentRepositoryImpl();
+    public static CourseService courseService = new CourseServiceImpl();
+    public static ExamService examService = new ExamServiceImpl();
+    public static StudentService studentService = new StudentServiceImpl();
+    public static TeacherService teacherService = new TeacherServiceImpl();
+    public static UserService userService = new UserServiceImpl();
 
 
 }

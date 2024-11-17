@@ -1,9 +1,9 @@
-package ir.maktabsharif.model;
+package ir.maktabsharif.model.model;
 
+import ir.maktabsharif.model.baseModel.BaseModel;
 import lombok.*;
 
 import javax.persistence.*;
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;

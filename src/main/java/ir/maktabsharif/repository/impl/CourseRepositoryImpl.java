@@ -1,7 +1,7 @@
 package ir.maktabsharif.repository.impl;
 
 import ir.maktabsharif.util.EntityManagerProvider;
-import ir.maktabsharif.model.Course;
+import ir.maktabsharif.model.model.Course;
 import ir.maktabsharif.repository.CourseRepository;
 
 import javax.persistence.EntityManager;
@@ -12,21 +12,21 @@ import java.util.Optional;
 
 
 public class CourseRepositoryImpl implements CourseRepository {
-    private final EntityManagerProvider entityManagerProvider;
-    public CourseRepositoryImpl(EntityManagerProvider entityManagerProvider) {
-        this.entityManagerProvider = entityManagerProvider;
+
+    public CourseRepositoryImpl() {
+
     }
 
     //--------------------------------------------------
     @Override
-    public Optional<Course> findById(long id) {
-        return Optional.ofNullable(entityManagerProvider.getEntityManager().find(Course.class, id));
+    public Optional<Course> findById(Long id) {
+        return Optional.ofNullable(EntityManagerProvider.getEntityManager().find(Course.class, id));
     }
 
     //--------------------------------------------------
     @Override
     public List<Course> findAll() {
-        return entityManagerProvider.getEntityManager().createQuery("from Course", Course.class).getResultList();
+        return EntityManagerProvider.getEntityManager().createQuery("from Course", Course.class).getResultList();
     }
 
     //--------------------------------------------------
@@ -39,11 +39,10 @@ public class CourseRepositoryImpl implements CourseRepository {
 
     //--------------------------------------------------
     @Override
-    public void delete(long id) {
-        EntityManager entityManager = entityManagerProvider.getEntityManager();
+    public void delete(Long id) {
+        EntityManager entityManager = EntityManagerProvider.getEntityManager();
         EntityTransaction transaction = entityManager.getTransaction();
-        Course course = findById(id).get();
-
+        Course course = entityManager.find(Course.class, id);
         try {
             transaction.begin();
             entityManager.remove(course);
@@ -57,7 +56,7 @@ public class CourseRepositoryImpl implements CourseRepository {
 
     //--------------------------------------------------
     public void persist(Course entity) {
-        EntityManager entityManager = entityManagerProvider.getEntityManager();
+        EntityManager entityManager = EntityManagerProvider.getEntityManager();
         EntityTransaction transaction = entityManager.getTransaction();
         try {
             transaction.begin();
@@ -72,7 +71,7 @@ public class CourseRepositoryImpl implements CourseRepository {
 
     //--------------------------------------------------
     public void update(Course entity) {
-        EntityManager entityManager = entityManagerProvider.getEntityManager();
+        EntityManager entityManager = EntityManagerProvider.getEntityManager();
         EntityTransaction transaction = entityManager.getTransaction();
         Optional<Course> course = findById(entity.getId());
         if (course.isPresent()) {

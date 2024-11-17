@@ -1,17 +1,16 @@
-package ir.maktabsharif.model;
+package ir.maktabsharif.model.baseModel;
 
 import lombok.*;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.sql.Timestamp;
 import java.util.Date;
 
 
 @Setter
 @Getter
 @MappedSuperclass
-public abstract class BaseModel implements Serializable {
+public abstract class BaseModel<T extends Serializable> {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     public Long id;

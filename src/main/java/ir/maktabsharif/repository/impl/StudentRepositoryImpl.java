@@ -1,7 +1,7 @@
 package ir.maktabsharif.repository.impl;
 
 import ir.maktabsharif.util.EntityManagerProvider;
-import ir.maktabsharif.model.Student;
+import ir.maktabsharif.model.model.Student;
 import ir.maktabsharif.repository.StudentRepository;
 
 import javax.persistence.EntityManager;
@@ -14,30 +14,30 @@ import java.util.Optional;
 //
 
 public class StudentRepositoryImpl implements StudentRepository {
-    private final EntityManagerProvider entityManagerProvider;
 
-    public StudentRepositoryImpl(EntityManagerProvider entityManagerProvider) {
-        this.entityManagerProvider = entityManagerProvider;
+
+    public StudentRepositoryImpl() {
+
     }
 
     //--------------------------------------------------
     @Override
     public int getStudentCount() {
-        EntityManager entityManager = entityManagerProvider.getEntityManager();
+        EntityManager entityManager = EntityManagerProvider.getEntityManager();
         Query query = entityManager.createQuery("SELECT COUNT(s) FROM Student s", Student.class);
         return ((Long) query.getSingleResult()).intValue();
     }
 
     //--------------------------------------------------
     @Override
-    public Optional<Student> findById(long id) {
-        return Optional.ofNullable(entityManagerProvider.getEntityManager().find(Student.class, id));
+    public Optional<Student> findById(Long id) {
+        return Optional.ofNullable(EntityManagerProvider.getEntityManager().find(Student.class, id));
     }
 
     //--------------------------------------------------
     @Override
     public List<Student> findAll() {
-        return entityManagerProvider.getEntityManager().createQuery("SELECT s FROM Student s", Student.class).getResultList();
+        return EntityManagerProvider.getEntityManager().createQuery("SELECT s FROM Student s", Student.class).getResultList();
     }
 
     //--------------------------------------------------
@@ -51,10 +51,10 @@ public class StudentRepositoryImpl implements StudentRepository {
 
     //--------------------------------------------------
     @Override
-    public void delete(long id) {
-        EntityManager entityManager = entityManagerProvider.getEntityManager();
+    public void delete(Long id) {
+        EntityManager entityManager = EntityManagerProvider.getEntityManager();
         EntityTransaction transaction = entityManager.getTransaction();
-        Student student = findById(id).get();
+        Student student = entityManager.find(Student.class, id);
         try {
             transaction.begin();
             entityManager.remove(student);
@@ -68,7 +68,7 @@ public class StudentRepositoryImpl implements StudentRepository {
 
     //--------------------------------------------------
     public void persist(Student entity) {
-        EntityManager entityManager = entityManagerProvider.getEntityManager();
+        EntityManager entityManager = EntityManagerProvider.getEntityManager();
         EntityTransaction transaction = entityManager.getTransaction();
         try {
             transaction.begin();
@@ -84,7 +84,7 @@ public class StudentRepositoryImpl implements StudentRepository {
     //--------------------------------------------------
     public void update(Student entity) {
         Optional<Student> studentOptional = this.findById(entity.getId());
-        EntityManager entityManager = entityManagerProvider.getEntityManager();
+        EntityManager entityManager = EntityManagerProvider.getEntityManager();
         EntityTransaction transaction = entityManager.getTransaction();
         if (studentOptional.isPresent()) {
 //            studentOptional.get().setFirstname(entity.getFirstname());
@@ -102,7 +102,7 @@ public class StudentRepositoryImpl implements StudentRepository {
 
     //--------------------------------------------------
     public List<Student> findByFirstname(String firstname) {
-        EntityManager entityManager = entityManagerProvider.getEntityManager();
+        EntityManager entityManager = EntityManagerProvider.getEntityManager();
         TypedQuery<Student> query = entityManager.createNamedQuery("Student.findByFirstname", Student.class);
         query.setParameter(1, firstname);
         return query.getResultList();

@@ -1,7 +1,7 @@
 package ir.maktabsharif.repository.impl;
 
 import ir.maktabsharif.util.EntityManagerProvider;
-import ir.maktabsharif.model.Teacher;
+import ir.maktabsharif.model.model.Teacher;
 import ir.maktabsharif.repository.TeacherRepository;
 
 import javax.persistence.EntityManager;
@@ -10,19 +10,21 @@ import java.util.List;
 import java.util.Optional;
 
 public class TeacherRepositoryImpl implements TeacherRepository {
-    private final EntityManagerProvider entityManagerProvider;
 
-    public TeacherRepositoryImpl(EntityManagerProvider entityManagerProvider) {
-        this.entityManagerProvider = entityManagerProvider;
+
+    public TeacherRepositoryImpl() {
+
     }
     @Override
-    public Optional<Teacher> findById(long id) {
-        return Optional.ofNullable(entityManagerProvider.getEntityManager().find(Teacher.class, id));
+    public Optional<Teacher> findById(Long id) {
+        return Optional.ofNullable(EntityManagerProvider.getEntityManager().find(Teacher.class, id));
+
+
     }
 
     @Override
     public List<Teacher> findAll() {
-        return entityManagerProvider.getEntityManager().createQuery("SELECT t FROM Teacher t", Teacher.class).getResultList();
+        return EntityManagerProvider.getEntityManager().createQuery("SELECT t FROM Teacher t", Teacher.class).getResultList();
     }
 
     @Override
@@ -33,10 +35,10 @@ public class TeacherRepositoryImpl implements TeacherRepository {
     }
 
     @Override
-    public void delete(long id) {
-        EntityManager entityManager = entityManagerProvider.getEntityManager();
+    public void delete(Long id) {
+        EntityManager entityManager = EntityManagerProvider.getEntityManager();
         EntityTransaction transaction = entityManager.getTransaction();
-        Teacher teacher = findById(id).get();
+        Teacher teacher = entityManager.find(Teacher.class, id);
         try {
             transaction.begin();
             entityManager.remove(teacher);
@@ -50,7 +52,7 @@ public class TeacherRepositoryImpl implements TeacherRepository {
 
     }
     public void persist(Teacher entity) {
-        EntityManager entityManager = entityManagerProvider.getEntityManager();
+        EntityManager entityManager = EntityManagerProvider.getEntityManager();
         EntityTransaction transaction = entityManager.getTransaction();
         try {
             transaction.begin();
@@ -64,7 +66,7 @@ public class TeacherRepositoryImpl implements TeacherRepository {
     }
 
     public void update(Teacher entity) {
-        EntityManager entityManager = entityManagerProvider.getEntityManager();
+        EntityManager entityManager = EntityManagerProvider.getEntityManager();
         EntityTransaction transaction = entityManager.getTransaction();
         Optional<Teacher> teacher = this.findById(entity.getId());
         if (teacher.isPresent()) {

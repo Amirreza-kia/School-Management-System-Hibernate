@@ -17,6 +17,13 @@
     </properties>
 
     <dependencies>
+<!--        برای مخفی کردن پسورد-->
+        <dependency>
+            <groupId>org.jline</groupId>
+            <artifactId>jline</artifactId>
+            <version>3.21.0</version>
+        </dependency>
+<!--_____________________________-->
         <dependency>
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
